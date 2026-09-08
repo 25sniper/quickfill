@@ -1,6 +1,7 @@
 import os
 import shutil
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -142,6 +143,29 @@ def upload_file(file: UploadFile = File(...)):
     
     # Return the exact path to be saved in the database
     return {"path": f"uploads/{unique_filename}", "info": f"file saved to {file_location}"}
+
+
+# --- Frontend Assets ---
+dist_path = os.path.join(BASE_DIR, "../dist")
+if os.path.exists(dist_path):
+    # Mount the /assets folder directly
+    assets_path = os.path.join(dist_path, "assets")
+    if os.path.exists(assets_path):
+        app.mount("/assets", StaticFiles(directory=assets_path), name="frontend_assets")
+        
+    # Catch-all to serve index.html for React Router
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        # Ignore API docs and explicit backend paths just in case
+        if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
+            raise HTTPException(status_code=404, detail="Not found")
+            
+        # Serve root files if they exist (like favicon or 3D models in public folder)
+        file_path = os.path.join(dist_path, full_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+            
+        return FileResponse(os.path.join(dist_path, "index.html"))
 
 
 # --- PythonAnywhere WSGI Wrapper ---
