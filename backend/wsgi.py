@@ -6,8 +6,5 @@ path = os.path.dirname(os.path.abspath(__file__))
 if path not in sys.path:
     sys.path.append(path)
 
-from main import app
-from a2wsgi import ASGIMiddleware
-
-# PythonAnywhere looks for a WSGI application named `application`
-application = ASGIMiddleware(app)
+# Import the Flask app object
+from app import app as application

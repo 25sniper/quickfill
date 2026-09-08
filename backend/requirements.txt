@@ -1,8 +1,7 @@
-fastapi
-uvicorn
-sqlalchemy
+Flask
+Flask-Cors
+SQLAlchemy
 pydantic
-python-multipart
-passlib[bcrypt]
 python-jose[cryptography]
-a2wsgi
+passlib[bcrypt]
+bcrypt<4.0.0

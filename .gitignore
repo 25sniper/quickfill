@@ -28,3 +28,8 @@ backend/venv/
 backend/__pycache__/
 backend/orders.db
 backend/uploads/
+
+# Ignored large assets and unused pages
+public/tab.glb
+src/AlignmentTool.tsx
+src/AnimationStudio.tsx
