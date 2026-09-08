@@ -153,9 +153,12 @@ if os.path.exists(dist_path):
     if os.path.exists(assets_path):
         app.mount("/assets", StaticFiles(directory=assets_path), name="frontend_assets")
         
+    from fastapi.responses import Response, HTMLResponse
+    import mimetypes
+
     # Catch-all to serve index.html for React Router
     @app.get("/{full_path:path}")
-    async def serve_react_app(full_path: str):
+    def serve_react_app(full_path: str):
         # Ignore API docs and explicit backend paths just in case
         if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
             raise HTTPException(status_code=404, detail="Not found")
@@ -163,9 +166,16 @@ if os.path.exists(dist_path):
         # Serve root files if they exist (like favicon or 3D models in public folder)
         file_path = os.path.join(dist_path, full_path)
         if os.path.isfile(file_path):
-            return FileResponse(file_path)
+            with open(file_path, "rb") as f:
+                content = f.read()
+            mime_type, _ = mimetypes.guess_type(file_path)
+            return Response(content=content, media_type=mime_type or "application/octet-stream")
             
-        return FileResponse(os.path.join(dist_path, "index.html"))
+        # Otherwise serve index.html
+        index_path = os.path.join(dist_path, "index.html")
+        with open(index_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        return HTMLResponse(content=html_content)
 
 
 # --- PythonAnywhere WSGI Wrapper ---
