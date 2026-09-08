@@ -3,7 +3,7 @@ import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
 export function TabModel() {
-  const { scene } = useGLTF('/tab.glb')
+  const { scene } = useGLTF('/tab-v1.glb')
   
   const clone = useMemo(() => {
     const clonedScene = scene.clone()

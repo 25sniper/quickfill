@@ -27,7 +27,7 @@ function PressAttachment({ pos, rot, scale }: { pos: [number,number,number], rot
 }
 
 function TapModel({ pos, rot, scale }: { pos: [number,number,number], rot: [number,number,number], scale: number }) {
-  const { scene } = useGLTF("/tab.glb")
+  const { scene } = useGLTF("/tab-v1.glb")
   const mesh = useMemo(() => {
     const clone = scene.clone(true)
     const box = new THREE.Box3().setFromObject(clone)
@@ -50,7 +50,7 @@ function TapModel({ pos, rot, scale }: { pos: [number,number,number], rot: [numb
 }
 
 useGLTF.preload("/pwh.glb")
-useGLTF.preload("/tab.glb")
+useGLTF.preload("/tab-v1.glb")
 
 // ── Generic slider row ─────────────────────────────────────────────────────────
 function SliderRow({ label, value, min, max, step, onChange, accentColor = "#22d3ee" }: {

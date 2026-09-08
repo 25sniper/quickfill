@@ -80,7 +80,7 @@ function Scene({
   const dragRef= useRef(false)
 
   const { scene:ps } = useGLTF("/pwh.glb")
-  const { scene:ts } = useGLTF("/tab.glb")
+  const { scene:ts } = useGLTF("/tab-v1.glb")
 
   const pressMesh = useMemo(()=>buildMesh(ps,3,new THREE.MeshPhysicalMaterial({
     color:"#d0d0d0",metalness:0.7,roughness:0.25,clearcoat:1,side:THREE.DoubleSide

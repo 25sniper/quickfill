@@ -156,6 +156,13 @@ if os.path.exists(dist_path):
     from fastapi.responses import Response, HTMLResponse
     import mimetypes
 
+    # Memory cache for index.html to prevent constant disk reads
+    index_path = os.path.join(dist_path, "index.html")
+    INDEX_HTML_CONTENT = ""
+    if os.path.exists(index_path):
+        with open(index_path, "r", encoding="utf-8") as f:
+            INDEX_HTML_CONTENT = f.read()
+
     # Catch-all to serve index.html for React Router
     @app.get("/{full_path:path}")
     def serve_react_app(full_path: str):
@@ -165,17 +172,14 @@ if os.path.exists(dist_path):
             
         # Serve root files if they exist (like favicon or 3D models in public folder)
         file_path = os.path.join(dist_path, full_path)
-        if os.path.isfile(file_path):
+        if full_path and os.path.isfile(file_path):
             with open(file_path, "rb") as f:
                 content = f.read()
             mime_type, _ = mimetypes.guess_type(file_path)
             return Response(content=content, media_type=mime_type or "application/octet-stream")
             
-        # Otherwise serve index.html
-        index_path = os.path.join(dist_path, "index.html")
-        with open(index_path, "r", encoding="utf-8") as f:
-            html_content = f.read()
-        return HTMLResponse(content=html_content)
+        # Otherwise serve the cached index.html
+        return HTMLResponse(content=INDEX_HTML_CONTENT)
 
 
 # --- PythonAnywhere WSGI Wrapper ---
