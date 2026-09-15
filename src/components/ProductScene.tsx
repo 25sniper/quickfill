@@ -236,19 +236,20 @@ function SceneContents({ scrollProgress }: { scrollProgress: number }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // ProductScene — scroll listener + WebGL recovery
 // ─────────────────────────────────────────────────────────────────────────────
-export function ProductScene() {
+export function ProductScene({ reducedMotion = false }: { reducedMotion?: boolean }) {
   const [scrollProgress, setScrollProgress] = React.useState(0)
   const [canvasKey,      setCanvasKey]      = React.useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (reducedMotion) console.debug('Reduced motion enabled')
     const onScroll = () => {
       const total   = document.documentElement.scrollHeight - window.innerHeight
       setScrollProgress(total > 0 ? window.scrollY / total : 0)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [reducedMotion])
 
   // Auto-recover from WebGL context loss
   useEffect(() => {

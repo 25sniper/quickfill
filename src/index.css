@@ -1,9 +1,67 @@
 @import "tailwindcss";
 
+@theme {
+  /* Brand Primary & Interactive Call-To-Action */
+  --color-primary: #ffffff;
+  --color-primary-hover: #e5e5e5;
+  --color-primary-foreground: #000000;
+
+  /* Backgrounds & Surface Hierarchy */
+  --color-background: #000000;
+  --color-surface-base: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-subtle: #0a0a0a;
+  --color-surface-card: #171717;
+  --color-card: #171717;
+  --color-surface-elevated: #262626;
+  --color-elevated: #262626;
+
+  /* Borders & Dividers (WCAG 1.4.11 Compliant) */
+  --color-border: #404040;
+  --color-border-subtle: #404040;
+  --color-border-hover: #525252;
+  --color-border-focus: #ffffff;
+
+  /* Typography & Text Hierarchy (WCAG 1.4.3 Compliant >= 4.5:1) */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #a3a3a3;
+  --color-text-placeholder: #737373;
+  --color-muted: #a3a3a3;
+  --color-placeholder: #737373;
+
+  /* Accents & Semantic Status Indicators */
+  --color-accent-yellow: #eab308;
+  --color-accent-green: #22c55e;
+  --color-accent-red: #f87171;
+  --color-accent-blue: #60a5fa;
+
+  /* Border Radius Tokens */
+  --radius-card: 1.5rem;
+  --radius-pill: 9999px;
+}
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--color-background, #000000);
+  color: var(--color-text-primary, #ffffff);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@utility border-subtle {
+  border-color: var(--color-border-subtle, #404040);
+}
+
+@utility border-focus {
+  border-color: var(--color-border-focus, #ffffff);
+}
+
+@utility focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-background, #000000), 0 0 0 4px var(--color-border-focus, #ffffff);
+  }
 }
