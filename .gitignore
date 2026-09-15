@@ -32,3 +32,13 @@ backend/uploads/
 public/tab.glb
 src/AlignmentTool.tsx
 src/AnimationStudio.tsx
+
+# Pre-production files and tests
+.agents/
+tests/
+backend/test_*.py
+ORIGINAL_REQUEST.md
+PROJECT.md
+TEST_INFRA.md
+TEST_READY.md
+prev.txt
